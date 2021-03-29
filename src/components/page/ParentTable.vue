@@ -2,7 +2,7 @@
     <div>
         <div class="crumbs">
             <el-breadcrumb separator="/">
-                <el-breadcrumb-item> <i class="el-icon-user"></i> 学生管理 </el-breadcrumb-item>
+                <el-breadcrumb-item> <i class="el-icon-user"></i> 家长管理 </el-breadcrumb-item>
             </el-breadcrumb>
         </div>
         <div class="container">
@@ -18,10 +18,10 @@
 
             <!-- 表格定制 -->
             <el-table :data="tableData" border max-height="700px" class="table" header-cell-class-name="table-header">
-                <el-table-column prop="studentId" label="学生编号" min-width="190" align="center"></el-table-column>
-                <el-table-column prop="name" label="学生姓名" min-width="125" align="center"></el-table-column>
-                <el-table-column prop="contact" label="联系方式" min-width="400" align="center"></el-table-column>
-                <el-table-column prop="credit" label="信誉" min-width="100" align="center"></el-table-column>
+                <el-table-column prop="parentId" label="家长编号" min-width="190" align="center"></el-table-column>
+                <el-table-column prop="parentName" label="家长姓名" min-width="125" align="center"></el-table-column>
+                <el-table-column prop="parentContact" label="联系方式" min-width="400" align="center"></el-table-column>
+                <!-- <el-table-column prop="credit" label="信誉" min-width="100" align="center"></el-table-column> -->
                 <el-table-column label="操作" min-width="160" align="center">
                     <template slot-scope="scope">
                         <el-button @click="handleEdit(scope.$index, scope.row)">编辑</el-button>
@@ -43,22 +43,22 @@
         </div>
 
         <!-- 添加弹出框定制 -->
-        <el-dialog title="添加学生" :visible.sync="addVisible" v-dialogDrag width="40%">
+        <el-dialog title="添加家长" :visible.sync="addVisible" v-dialogDrag width="40%">
             <el-form ref="form" :model="form" label-width="auto">
                 <el-form-item label="姓名">
-                    <el-input v-model="form.name"></el-input>
+                    <el-input v-model="form.parentName"></el-input>
                 </el-form-item>
                 <el-form-item label="联系方式">
-                    <el-input v-model="form.contact"></el-input>
+                    <el-input v-model="form.parentContact"></el-input>
                 </el-form-item>
-                <el-form-item label="信誉">
+                <!-- <el-form-item label="信誉">
                     <el-select v-model="form.credit" placeholder="请选择信誉值">
                         <el-option label="优秀" value="优秀"></el-option>
                         <el-option label="良好" value="良好"></el-option>
                         <el-option label="中等" value="中等"></el-option>
                         <el-option label="不合格" value="不合格"></el-option>
                     </el-select>
-                </el-form-item>
+                </el-form-item> -->
             </el-form>
             <span slot="footer" class="dialog-footer">
                 <el-button @click="displayDialog">取 消</el-button>
@@ -67,22 +67,22 @@
         </el-dialog>
 
         <!-- 编辑弹出框定制 -->
-        <el-dialog title="编辑学生信息" :visible.sync="editVisible" v-dialogDrag width="40%">
+        <el-dialog title="编辑家长信息" :visible.sync="editVisible" v-dialogDrag width="40%">
             <el-form ref="form" :model="form" label-width="auto">
                 <el-form-item label="姓名">
-                    <el-input v-model="form.name"></el-input>
+                    <el-input v-model="form.parentName"></el-input>
                 </el-form-item>
                 <el-form-item label="联系方式">
-                    <el-input v-model="form.contact"></el-input>
+                    <el-input v-model="form.parentContact"></el-input>
                 </el-form-item>
-                <el-form-item label="信誉">
+                <!-- <el-form-item label="信誉">
                     <el-select v-model="form.credit" placeholder="请选择信誉值">
                         <el-option label="优秀" value="优秀"></el-option>
                         <el-option label="良好" value="良好"></el-option>
                         <el-option label="中等" value="中等"></el-option>
                         <el-option label="不合格" value="不合格"></el-option>
                     </el-select>
-                </el-form-item>
+                </el-form-item> -->
             </el-form>
             <span slot="footer" class="dialog-footer">
                 <el-button @click="displayDialog">取 消</el-button>
@@ -93,7 +93,7 @@
 </template>
 
 <script>
-import { listAllStudents, insertStudent, updateCredit, updateName, getStudentById, updateAll } from '../../api/student';
+import { listAllParents, insertParent, getParentById, updateAll } from '../../api/parents';
 import { clone, objListFilter } from '../../utils/common';
 export default {
     name: 'basetable',
@@ -113,17 +113,17 @@ export default {
         };
     },
     created() {
-        this.getStudentsData();
+        this.getParentsData();
     },
     methods: {
         // 从后端获取所有学生信息
-        getStudentsData() {
-            listAllStudents()
-                .then(response => {
+        getParentsData() {
+            listAllParents()
+                .then((response) => {
                     this.tableDataSource = response.data;
                     this.tableData = response.data;
                 })
-                .catch(error => {
+                .catch((error) => {
                     this.$message.error('请刷新页面重新加载');
                 });
         },
@@ -134,17 +134,17 @@ export default {
         },
         // 保存
         saveAdd() {
-            insertStudent(this.form)
-                .then(response => {
+            insertParent(this.form)
+                .then((response) => {
                     console.log(response);
                     if (response.status == 200) {
-                        this.form.studentId = response.data;
+                        this.form.parentId = response.data;
                         this.tableData.push(this.form);
                         this.displayDialog();
                         this.$message.success('添加成功');
                     }
                 })
-                .catch(error => {
+                .catch((error) => {
                     console.log(error);
                     this.$message.error('添加出现了问题，请重新尝试');
                 });
@@ -165,11 +165,14 @@ export default {
         // 保存编辑
         saveEdit() {
             var data = this.form;
-            updateAll(data).then(response => {
+            updateAll(data).then((response) => {
                 console.log(response);
-                this.$set(this.tableData, this.idx, this.form);
+                // this.$set(this.tableData, this.idx, this.form);
+                Object.keys(this.tableData[this.idx]).forEach((key) => {
+                    this.tableData[this.idx][key] = this.form[key];
+                });
                 this.displayDialog();
-                this.$message.success('添加成功');
+                this.$message.success('编辑成功');
             });
         },
         // 分页导航

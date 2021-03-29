@@ -61,6 +61,11 @@ export default {
                     icon: 'el-icon-user',
                     index: 'student',
                     title: '学生管理'
+                },
+                {
+                    icon: 'el-icon-user',
+                    index: 'parent',
+                    title: '家长管理'
                 }
                 // {
                 //     icon: 'el-icon-lx-cascades',
@@ -156,7 +161,7 @@ export default {
     },
     created() {
         // 通过 Event Bus 进行组件间通信，来折叠侧边栏
-        bus.$on('collapse', msg => {
+        bus.$on('collapse', (msg) => {
             this.collapse = msg;
             bus.$emit('collapse-content', msg);
         });

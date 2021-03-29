@@ -23,6 +23,11 @@ export default new Router({
                     path: '/student',
                     component: () => import('../components/page/StudentTable.vue'),
                     meta: { title: '学生管理' }
+                },
+                {
+                    path: '/parent',
+                    component: () => import('../components/page/ParentTable.vue'),
+                    meta: { title: '家长管理' }
                 }
             ]
         },
