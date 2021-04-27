@@ -8,7 +8,7 @@ const service = axios.create({
      * 需要将项目部署到服务器时，在执行npm run build命令前，需要将改行取消注释,
      * 以让页面以正确的前缀请求后端服务器。
      */
-    // baseURL: 'https://api.gxlmedu.com',
+    baseURL: 'https://api.gxlmedu.com',
     timeout: 5000,
     responseType: 'json',
     headers: {
