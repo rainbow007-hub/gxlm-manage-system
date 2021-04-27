@@ -126,7 +126,6 @@
                     <el-input v-model="form.request"></el-input>
                 </el-form-item>
                 <el-form-item label="学生性别">
-                    <!-- <el-input v-model="form.sex"></el-input> -->
                     <el-radio-group v-model="form.sex">
                         <el-radio label="男">男</el-radio>
                         <el-radio label="女">女</el-radio>
@@ -273,18 +272,17 @@ export default {
     },
     created() {
         this.getOrdersData();
-        console.log(dateFormat(new Date()));
     },
     methods: {
         // 从后端获取所有订单信息
         getOrdersData() {
             listAllOrders()
                 .then(response => {
-                    this.tableData = response.data;
                     this.tableDataSource = response.data;
+                    this.tableData = this.tableDataSource;
                 })
                 .catch(error => {
-                    this.$message.error('请刷新页面重新加载');
+                    if (error) this.$message.error('请刷新页面重新加载');
                 });
         },
         // 添加操作
@@ -299,7 +297,6 @@ export default {
             insertOrder(this.form)
                 .then(response => {
                     this.form.orderId = response.data;
-                    this.tableData.unshift(this.form);
                     this.tableDataSource.unshift(this.form);
                     this.displayDialog();
                     this.$message.success('添加成功');
@@ -439,6 +436,7 @@ export default {
         // 获取编辑对话框当前显示的选项卡名
         handleClickTab(tab, event) {
             this.tabNameForEditOrder = tab.name;
+            this.form = clone(this.tableData[this.idx]);
         },
         // 分页导航
         // handlePageChange(val) {

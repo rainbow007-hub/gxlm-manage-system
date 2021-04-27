@@ -119,35 +119,36 @@ export default {
         // 从后端获取所有学生信息
         getParentsData() {
             listAllParents()
-                .then((response) => {
+                .then(response => {
                     this.tableDataSource = response.data;
-                    this.tableData = response.data;
+                    this.tableData = this.tableDataSource;
                 })
-                .catch((error) => {
-                    this.$message.error('请刷新页面重新加载');
+                .catch(error => {
+                    if (error) this.$message.error('请刷新页面重新加载');
                 });
         },
         // 添加操作
         handleAdd() {
-            this.form = {};
-            this.addVisible = true;
+            this.$message.warning('当前不支持该功能');
+            // this.form = {};
+            // this.addVisible = true;
         },
-        // 保存
+        // 保存添加
         saveAdd() {
-            insertParent(this.form)
-                .then((response) => {
-                    console.log(response);
-                    if (response.status == 200) {
-                        this.form.parentId = response.data;
-                        this.tableData.push(this.form);
-                        this.displayDialog();
-                        this.$message.success('添加成功');
-                    }
-                })
-                .catch((error) => {
-                    console.log(error);
-                    this.$message.error('添加出现了问题，请重新尝试');
-                });
+            //     insertParent(this.form)
+            //         .then(response => {
+            //             if (response.status == 200) {
+            //                 this.form.parentId = response.data;
+            //                 this.tableDataSource.unshift(this.form);
+            //                 this.displayDialog();
+            //                 this.handleSearch();
+            //                 this.$message.success('添加成功');
+            //             }
+            //         })
+            //         .catch(error => {
+            //             console.log(error);
+            //             this.$message.error('添加出现了问题，请重新尝试');
+            //         });
         },
         // 触发搜索按钮
         handleSearch() {
@@ -165,10 +166,8 @@ export default {
         // 保存编辑
         saveEdit() {
             var data = this.form;
-            updateAll(data).then((response) => {
-                console.log(response);
-                // this.$set(this.tableData, this.idx, this.form);
-                Object.keys(this.tableData[this.idx]).forEach((key) => {
+            updateAll(data).then(response => {
+                Object.keys(this.tableData[this.idx]).forEach(key => {
                     this.tableData[this.idx][key] = this.form[key];
                 });
                 this.displayDialog();

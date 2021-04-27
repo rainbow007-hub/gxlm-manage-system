@@ -4,6 +4,6 @@ module.exports = {
     // assetsDir: 'static',
     // productionSourceMap: false,
     devServer: {
-        proxy: 'https://47.107.117.59:3000'
+        proxy: 'https://api.gxlmedu.com'
     }
-}
+};

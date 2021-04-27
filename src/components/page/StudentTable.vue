@@ -124,7 +124,7 @@ export default {
                     this.tableData = response.data;
                 })
                 .catch(error => {
-                    this.$message.error('请刷新页面重新加载');
+                    if (error) this.$message.error('请刷新页面重新加载');
                 });
         },
         // 添加操作
@@ -139,7 +139,7 @@ export default {
                     console.log(response);
                     if (response.status == 200) {
                         this.form.studentId = response.data;
-                        this.tableData.push(this.form);
+                        this.tableDataSource.unshift(this.form);
                         this.displayDialog();
                         this.$message.success('添加成功');
                     }
@@ -166,8 +166,9 @@ export default {
         saveEdit() {
             var data = this.form;
             updateAll(data).then(response => {
-                console.log(response);
-                this.$set(this.tableData, this.idx, this.form);
+                Object.keys(this.tableData[this.idx]).forEach(key => {
+                    this.tableData[this.idx][key] = this.form[key];
+                });
                 this.displayDialog();
                 this.$message.success('添加成功');
             });
